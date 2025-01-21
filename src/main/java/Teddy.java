@@ -18,10 +18,18 @@ public class Teddy {
             if (input.equalsIgnoreCase("bye")) {
                 System.out.println(seperator + "\nBye! Hope to see you again soon!\n" + seperator);
                 break;
+            } else if (input.equalsIgnoreCase("list")) {
+                int count = 1;
+                System.out.println(seperator);
+                for (String item : list) {
+                    System.out.println(count + ". " + item);
+                    count++;
+                }
+                System.out.println(seperator);
+            } else {
+                System.out.println(seperator + "\n" + "added: " + input + "\n" + seperator);
+                list.add(input);
             }
-
-            System.out.println(seperator + "\n" + "added: " + input + "\n" + seperator);
-            list.add(input);
         }
     }
 }
