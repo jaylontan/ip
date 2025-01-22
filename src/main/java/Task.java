@@ -22,6 +22,7 @@ public class Task {
         return this.index;
     }
 
+    @Override
     public String toString() {
         if (this.done) {
             return "[X] " + this.task;
