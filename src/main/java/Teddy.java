@@ -22,7 +22,9 @@ public class Teddy {
                 if (command.equalsIgnoreCase("bye")) { // exit command
                     System.out.println(SEPERATOR + "\nBye! Hope to see you again soon!\n" + SEPERATOR);
                     break;
-                } else if (command.equalsIgnoreCase("list")) { // list out all items
+                } else if (command.equalsIgnoreCase("hello") || command.equalsIgnoreCase("hi")) {
+                    System.out.println(SEPERATOR + "\nHello!\n" + SEPERATOR);
+                }else if (command.equalsIgnoreCase("list")) { // list out all items
                     listTasks();
                 } else if (command.equalsIgnoreCase("mark")) {
                     markAsDone(parts);
@@ -34,7 +36,9 @@ public class Teddy {
                     addDeadline(parts, list.size() + 1);
                 } else if (command.equalsIgnoreCase("event")) {
                     addEvent(parts[1], list.size() + 1);
-                } else { // add task to list
+                } else if (command.equalsIgnoreCase("delete")) {
+                    deleteTask(parts);
+                } else {
                     System.out.println(SEPERATOR + "\n I don't know how to respond to that.\n" + SEPERATOR);
                 }
             } catch (TeddyException e) {
@@ -47,8 +51,10 @@ public class Teddy {
 
     public static void listTasks() {
         System.out.println(SEPERATOR + "\nHere are the tasks in your list:");
+        int count = 1;
         for (Task task : list) {
-            System.out.println(task.getIndex() + ". " + task);
+            System.out.println(count + ". " + task);
+            count++;
         }
         System.out.println(SEPERATOR);
     }
@@ -133,4 +139,24 @@ public class Teddy {
         System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + event
                 + "\nNow you have " + list.size() + (list.size() > 1 ? " tasks" : " task") + " in the list.\n" + SEPERATOR);
     }
+
+    public static void deleteTask(String[] parts) throws TeddyException {
+        try {
+            if (parts.length <= 1 || parts[1].isBlank()) { // check if index is provided
+                throw new TeddyException("Please specify the task number to delete.");
+            }
+            int index = Integer.parseInt(parts[1]);
+            if (index < 1 || index > list.size()) {
+                throw new TeddyException("Task number " + index + " does not exist in the list.");
+            }
+            System.out.println(SEPERATOR + "\nNoted. I've removed this task:\n  " + list.get(index - 1));
+            list.remove(index - 1);
+            System.out.println("Now you have " + list.size() + (list.size() == 1 ? " task" : " tasks") + " in the list.\n" + SEPERATOR);
+        } catch (NumberFormatException e) { // handle non integer input
+            throw new TeddyException("Task number must be a valid integer.");
+        } catch (IndexOutOfBoundsException e) { //handle index out of range errors
+            throw new TeddyException("Task number is out of range. Please try again.");
+        }
+    }
+
 }
