@@ -6,7 +6,6 @@ public class Teddy {
 
     private static final String SEPERATOR =  "_".repeat(60);
     private static List<Task> list = new ArrayList<>();
-    private static int count  = 1;
 
     public static void main(String[] args) {
         // chatbot greeting
@@ -16,33 +15,32 @@ public class Teddy {
         Scanner sc = new Scanner(System.in);
 
         while (true) {
-            String input = sc.nextLine();
-            String[] parts = input.split(" ", 2);
-            String command = parts[0];
-            if (command.equalsIgnoreCase("bye")) { // exit command
-                System.out.println(SEPERATOR + "\nBye! Hope to see you again soon!\n" + SEPERATOR);
-                break;
-            } else if (command.equalsIgnoreCase("list")) { // list out all items
-                listTasks();
-            } else if (command.equalsIgnoreCase("mark")) {
-                int index = Integer.parseInt(parts[1]);
-                markAsDone(index);
-            } else if (command.equalsIgnoreCase("unmark")) {
-                int index = Integer.parseInt(parts[1]);
-                unmark(index);
-            } else if (command.equalsIgnoreCase("todo")) {
-                String task = parts[1];
-                addTodo(task, count);
-                count++;
-            } else if (command.equalsIgnoreCase("deadline")) {
-                addDeadline(parts[1], count);
-                count++;
-            } else if (command.equalsIgnoreCase("event")) {
-                addEvent(parts[1], count);
-                count++;
-            } else { // add task to list
-                addTask(input, count);
-                count++;
+            try {
+                String input = sc.nextLine();
+                String[] parts = input.split(" ", 2);
+                String command = parts[0];
+                if (command.equalsIgnoreCase("bye")) { // exit command
+                    System.out.println(SEPERATOR + "\nBye! Hope to see you again soon!\n" + SEPERATOR);
+                    break;
+                } else if (command.equalsIgnoreCase("list")) { // list out all items
+                    listTasks();
+                } else if (command.equalsIgnoreCase("mark")) {
+                    markAsDone(parts);
+                } else if (command.equalsIgnoreCase("unmark")) {
+                    unmark(parts);
+                } else if (command.equalsIgnoreCase("todo")) {
+                    addTodo(parts, list.size() + 1);
+                } else if (command.equalsIgnoreCase("deadline")) {
+                    addDeadline(parts, list.size() + 1);
+                } else if (command.equalsIgnoreCase("event")) {
+                    addEvent(parts[1], list.size() + 1);
+                } else { // add task to list
+                    System.out.println(SEPERATOR + "\n I don't know how to respond to that.\n" + SEPERATOR);
+                }
+            } catch (TeddyException e) {
+                System.out.println(SEPERATOR + "\n" + e.getMessage() + "\n" + SEPERATOR);
+            } catch (Exception e) {
+                System.out.println(SEPERATOR + "\nSomething went wrong. Please try again.\n" + SEPERATOR);
             }
         }
     }
@@ -55,64 +53,84 @@ public class Teddy {
         System.out.println(SEPERATOR);
     }
 
-    public static void markAsDone(int index) {
-        list.get(index - 1).mark();
-        System.out.println(SEPERATOR + "\nNice! I've marked this task as done:\n   " +
-                list.get(index - 1).toString() + "\n" + SEPERATOR);
-    }
-
-    public static void unmark(int index) {
-        list.get(index - 1).unmark();
-        System.out.println(SEPERATOR + "\nOK, I've marked this task as not done yet:\n   " +
-                list.get(index - 1).toString() + "\n" + SEPERATOR);
-    }
-
-    public static void addTask(String input, int count) {
-        Task task = new Task(input, count);
-        System.out.println(SEPERATOR + "\nadded: " + task + "\n" + SEPERATOR);
-        list.add(task);
-    }
-
-    public static void addTodo(String input, int count) {
-        Todo todo = new Todo(input, count);
-        list.add(todo);
-        if (list.size() > 1) {
-            System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + todo
-                    + "\nNow you have " + list.size() + " tasks in the list.\n" + SEPERATOR);
-        } else {
-            System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + todo
-                    + "\nNow you have " + list.size() + " task in the list.\n" + SEPERATOR);
+    public static void markAsDone(String[] parts) throws TeddyException {
+        if (parts.length <= 1 || parts[1].isBlank()) {
+            throw new TeddyException("Please specify the task number to mark as done.");
+        }
+        try {
+            int index = Integer.parseInt(parts[1]);
+            list.get(index - 1).mark();
+            System.out.println(SEPERATOR + "\nNice! I've marked this task as done:\n   " +
+                    list.get(index - 1).toString() + "\n" + SEPERATOR);
+        } catch (IndexOutOfBoundsException e) {
+            throw new TeddyException("Task number " + parts[1] + " does not exist.");
+        } catch (NumberFormatException e) {
+            throw new TeddyException("Task number must be a valid integer.");
         }
     }
 
-    public static void addDeadline(String input, int count) {
-        String[] split = input.split("/");
-        String task = split[0].trim();
-        String time = split[1].split(" ", 2)[1];
-        Deadline deadline = new Deadline(task, count, time);
+    public static void unmark(String[] parts) throws TeddyException {
+        if (parts.length <= 1 || parts[1].isBlank()) {
+            throw new TeddyException("Please specify the task number to marked as not done.");
+        }
+        try {
+            int index = Integer.parseInt(parts[1]);
+            list.get(index - 1).mark();
+            System.out.println(SEPERATOR + "\nOK, I've marked this task as not done yet:\n   " +
+                    list.get(index - 1).toString() + "\n" + SEPERATOR);
+        } catch (IndexOutOfBoundsException e) {
+            throw new TeddyException("Task number " + parts[1] + " does not exist.");
+        } catch (NumberFormatException e) {
+            throw new TeddyException("Task number must be a valid integer.");
+        }
+    }
+
+    public static void addTodo(String[] parts, int count) throws TeddyException{
+        if (parts.length <= 1 || parts[1].isBlank()) {
+            throw new TeddyException("The description of a todo cannot be empty.");
+        } else {
+            Todo todo = new Todo(parts[1], count);
+            list.add(todo);
+            System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + todo
+                    + "\nNow you have " + list.size() + (list.size() > 1 ? " tasks" : " task") + " in the list.\n" + SEPERATOR);
+        }
+    }
+
+    public static void addDeadline(String[] parts, int count) throws TeddyException {
+        if (parts.length <= 1 || parts[1].isBlank()) {
+            throw new TeddyException("The description of a deadline cannot be empty.");
+        }
+        if (!parts[1].contains("/by")) {
+            throw new TeddyException("A deadline must have a '/by' followed by the time (e.g., 'deadline task /by time').");
+        }
+        String[] split = parts[1].split("/by", 2);
+        if (split.length < 2 || split[1].isBlank()) {
+            throw new TeddyException("The time for a deadline cannot be empty.");
+        }
+        Deadline deadline = new Deadline(split[0].trim(), count, split[1].trim());
         list.add(deadline);
-        if (list.size() > 1) {
-            System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + deadline
-                    + "\nNow you have " + list.size() + " tasks in the list.\n" + SEPERATOR);
-        } else {
-            System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + deadline
-                    + "\nNow you have " + list.size() + " task in the list.\n" + SEPERATOR);
-        }
+        System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + deadline
+                + "\nNow you have " + list.size() + (list.size() > 1 ? " tasks" : " task") + " in the list.\n" + SEPERATOR);
     }
 
-    public static void addEvent(String input, int count) {
+
+    public static void addEvent(String input, int count) throws TeddyException {
+        if (input == null || input.isBlank()) {
+            throw new TeddyException("The description of an event cannot be empty.");
+        }
+        if (!input.contains("/from") || !input.contains("/to")) {
+            throw new TeddyException("An event must have '/from' and '/to' followed by the start and end times.");
+        }
         String[] split = input.split("/");
+        if (split.length < 3) {
+            throw new TeddyException("The start and end times for an event cannot be empty.");
+        }
         String task = split[0].trim();
-        String start = split[1].trim().split(" ", 2)[1];
-        String end = split[2].trim().split(" ", 2)[1];
+        String start = split[1].split(" ", 2)[1].trim();
+        String end = split[2].split(" ", 2)[1].trim();
         Event event = new Event(task, count, start, end);
         list.add(event);
-        if (list.size() > 1) {
-            System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + event
-                    + "\nNow you have " + list.size() + " tasks in the list.\n" + SEPERATOR);
-        } else {
-            System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + event
-                    + "\nNow you have " + list.size() + " task in the list.\n" + SEPERATOR);
-        }
+        System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + event
+                + "\nNow you have " + list.size() + (list.size() > 1 ? " tasks" : " task") + " in the list.\n" + SEPERATOR);
     }
 }
