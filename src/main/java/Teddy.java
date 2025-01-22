@@ -17,7 +17,7 @@ public class Teddy {
 
         while (true) {
             String input = sc.nextLine();
-            String[] parts = input.split(" ");
+            String[] parts = input.split(" ", 2);
             String command = parts[0];
             if (command.equalsIgnoreCase("bye")) { // exit command
                 System.out.println(SEPERATOR + "\nBye! Hope to see you again soon!\n" + SEPERATOR);
@@ -30,6 +30,16 @@ public class Teddy {
             } else if (command.equalsIgnoreCase("unmark")) {
                 int index = Integer.parseInt(parts[1]);
                 unmark(index);
+            } else if (command.equalsIgnoreCase("todo")) {
+                String task = parts[1];
+                addTodo(task, count);
+                count++;
+            } else if (command.equalsIgnoreCase("deadline")) {
+                addDeadline(parts[1], count);
+                count++;
+            } else if (command.equalsIgnoreCase("event")) {
+                addEvent(parts[1], count);
+                count++;
             } else { // add task to list
                 addTask(input, count);
                 count++;
@@ -61,5 +71,48 @@ public class Teddy {
         Task task = new Task(input, count);
         System.out.println(SEPERATOR + "\nadded: " + task + "\n" + SEPERATOR);
         list.add(task);
+    }
+
+    public static void addTodo(String input, int count) {
+        Todo todo = new Todo(input, count);
+        list.add(todo);
+        if (list.size() > 1) {
+            System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + todo
+                    + "\nNow you have " + list.size() + " tasks in the list.\n" + SEPERATOR);
+        } else {
+            System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + todo
+                    + "\nNow you have " + list.size() + " task in the list.\n" + SEPERATOR);
+        }
+    }
+
+    public static void addDeadline(String input, int count) {
+        String[] split = input.split("/");
+        String task = split[0].trim();
+        String time = split[1].split(" ", 2)[1];
+        Deadline deadline = new Deadline(task, count, time);
+        list.add(deadline);
+        if (list.size() > 1) {
+            System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + deadline
+                    + "\nNow you have " + list.size() + " tasks in the list.\n" + SEPERATOR);
+        } else {
+            System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + deadline
+                    + "\nNow you have " + list.size() + " task in the list.\n" + SEPERATOR);
+        }
+    }
+
+    public static void addEvent(String input, int count) {
+        String[] split = input.split("/");
+        String task = split[0].trim();
+        String start = split[1].trim().split(" ", 2)[1];
+        String end = split[2].trim().split(" ", 2)[1];
+        Event event = new Event(task, count, start, end);
+        list.add(event);
+        if (list.size() > 1) {
+            System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + event
+                    + "\nNow you have " + list.size() + " tasks in the list.\n" + SEPERATOR);
+        } else {
+            System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + event
+                    + "\nNow you have " + list.size() + " task in the list.\n" + SEPERATOR);
+        }
     }
 }
