@@ -4,15 +4,12 @@
 /*.iml
 
 # Output and compiled files
-/out/
 /bin/
 /build/
 *.class
 
 # Gradle build files
 /.gradle/
-/build/
-src/main/resources/docs/
 
 # MacOS custom attributes files created by Finder
 .DS_Store
