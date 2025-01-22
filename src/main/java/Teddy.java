@@ -18,28 +18,35 @@ public class Teddy {
             try {
                 String input = sc.nextLine();
                 String[] parts = input.split(" ", 2);
-                String command = parts[0];
-                if (command.equalsIgnoreCase("bye")) { // exit command
-                    System.out.println(SEPERATOR + "\nBye! Hope to see you again soon!\n" + SEPERATOR);
-                    break;
-                } else if (command.equalsIgnoreCase("hello") || command.equalsIgnoreCase("hi")) {
-                    System.out.println(SEPERATOR + "\nHello!\n" + SEPERATOR);
-                }else if (command.equalsIgnoreCase("list")) { // list out all items
-                    listTasks();
-                } else if (command.equalsIgnoreCase("mark")) {
-                    markAsDone(parts);
-                } else if (command.equalsIgnoreCase("unmark")) {
-                    unmark(parts);
-                } else if (command.equalsIgnoreCase("todo")) {
-                    addTodo(parts, list.size() + 1);
-                } else if (command.equalsIgnoreCase("deadline")) {
-                    addDeadline(parts, list.size() + 1);
-                } else if (command.equalsIgnoreCase("event")) {
-                    addEvent(parts[1], list.size() + 1);
-                } else if (command.equalsIgnoreCase("delete")) {
-                    deleteTask(parts);
-                } else {
-                    System.out.println(SEPERATOR + "\n I don't know how to respond to that.\n" + SEPERATOR);
+                Command command = Command.fromString(parts[0]);
+
+                switch (command) {
+                    case BYE:
+                        System.out.println(SEPERATOR + "\nBye! Hope to see you again soon!\n" + SEPERATOR);
+                        return;
+                    case LIST:
+                        listTasks();
+                        break;
+                    case MARK:
+                        markAsDone(parts);
+                        break;
+                    case UNMARK:
+                        unmark(parts);
+                        break;
+                    case TODO:
+                        addTodo(parts, list.size() + 1);
+                        break;
+                    case DEADLINE:
+                        addDeadline(parts, list.size() + 1);
+                        break;
+                    case EVENT:
+                        addEvent(parts[1], list.size() + 1);
+                        break;
+                    case DELETE:
+                        deleteTask(parts);
+                        break;
+                    default:
+                        throw new TeddyException("I don't understand the command: " + parts[0]);
                 }
             } catch (TeddyException e) {
                 System.out.println(SEPERATOR + "\n" + e.getMessage() + "\n" + SEPERATOR);
@@ -81,7 +88,7 @@ public class Teddy {
         }
         try {
             int index = Integer.parseInt(parts[1]);
-            list.get(index - 1).mark();
+            list.get(index - 1).unmark();
             System.out.println(SEPERATOR + "\nOK, I've marked this task as not done yet:\n   " +
                     list.get(index - 1).toString() + "\n" + SEPERATOR);
         } catch (IndexOutOfBoundsException e) {
