@@ -10,8 +10,16 @@ public class Task {
         this.done = false;
     }
 
-    public void markDone() {
+    public void mark() {
         this.done = true;
+    }
+
+    public void unmark() {
+        this.done = false;
+    }
+
+    public int getIndex() {
+        return this.index;
     }
 
     public String toString() {

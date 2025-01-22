@@ -8,27 +8,40 @@ public class Teddy {
         System.out.println(seperator + "\nHello! I'm Teddy\nWhat can I do for you?\n" + seperator);
 
         // creating list
-        ArrayList<String> list = new ArrayList<>();
+        ArrayList<Task> list = new ArrayList<>();
 
         // reading input from user
         Scanner sc = new Scanner(System.in);
+        int count = 1;
 
         while (true) {
             String input = sc.nextLine();
-            if (input.equalsIgnoreCase("bye")) {
+            String[] parts = input.split(" ");
+            String command = parts[0];
+            if (command.equalsIgnoreCase("bye")) {
                 System.out.println(seperator + "\nBye! Hope to see you again soon!\n" + seperator);
                 break;
-            } else if (input.equalsIgnoreCase("list")) {
-                int count = 1;
+            } else if (command.equalsIgnoreCase("list")) { // list out all items
                 System.out.println(seperator);
-                for (String item : list) {
-                    System.out.println(count + ". " + item);
-                    count++;
+                for (Task task : list) {
+                    System.out.println(task.getIndex() + ". " + task.toString());
                 }
                 System.out.println(seperator);
-            } else {
-                System.out.println(seperator + "\n" + "added: " + input + "\n" + seperator);
-                list.add(input);
+            } else if (command.equalsIgnoreCase("mark")) {
+                int index = Integer.parseInt(parts[1]);
+                list.get(index - 1).mark();
+                System.out.println(seperator + "\nNice! I've marked this task as done:\n   " +
+                        list.get(index - 1).toString() + "\n" + seperator);
+            } else if (command.equalsIgnoreCase("unmark")) {
+                int index = Integer.parseInt(parts[1]);
+                list.get(index - 1).unmark();
+                System.out.println(seperator + "\nOK, I've marked this task as not done yet:\n   " +
+                        list.get(index - 1).toString() + "\n" + seperator);
+            } else { // add task to list
+                Task task = new Task(input, count);
+                System.out.println(seperator + "\nadded: " + task.toString() + "\n" + seperator);
+                list.add(task);
+                count++;
             }
         }
     }
