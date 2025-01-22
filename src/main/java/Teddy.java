@@ -48,7 +48,7 @@ public class Teddy {
     }
 
     public static void listTasks() {
-        System.out.println(SEPERATOR);
+        System.out.println(SEPERATOR + "\nHere are the tasks in your list:");
         for (Task task : list) {
             System.out.println(task.getIndex() + ". " + task);
         }
