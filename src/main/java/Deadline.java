@@ -1,10 +1,19 @@
 public class Deadline extends Task {
 
-    private String time;
+    private final String time;
 
-    public Deadline(String input, int index, String time) {
-        super(input, index);
+    public Deadline(String input, String time) {
+        super(input);
         this.time = time;
+    }
+
+    public String getTime() {
+        return this.time;
+    }
+
+    @Override
+    public String toFileFormat() {
+        return "D | " + (isDone() ? "1" : "0") + " | " + getTask() + " | " + time;
     }
 
     @Override

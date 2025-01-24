@@ -5,7 +5,9 @@ import java.util.ArrayList;
 public class Teddy {
 
     private static final String SEPERATOR =  "_".repeat(60);
-    private static List<Task> list = new ArrayList<>();
+    private static final String FILE_PATH = "./data/teddy.txt";
+    private static final String DIRECTORY_PATH = "./data";
+    private static final List<Task> list = new ArrayList<>();
 
     public static void main(String[] args) {
         // chatbot greeting
@@ -102,7 +104,7 @@ public class Teddy {
         if (parts.length <= 1 || parts[1].isBlank()) {
             throw new TeddyException("The description of a todo cannot be empty.");
         } else {
-            Todo todo = new Todo(parts[1], count);
+            Todo todo = new Todo(parts[1]);
             list.add(todo);
             System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + todo
                     + "\nNow you have " + list.size() + (list.size() > 1 ? " tasks" : " task") + " in the list.\n" + SEPERATOR);
@@ -120,7 +122,7 @@ public class Teddy {
         if (split.length < 2 || split[1].isBlank()) {
             throw new TeddyException("The time for a deadline cannot be empty.");
         }
-        Deadline deadline = new Deadline(split[0].trim(), count, split[1].trim());
+        Deadline deadline = new Deadline(split[0].trim(), split[1].trim());
         list.add(deadline);
         System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + deadline
                 + "\nNow you have " + list.size() + (list.size() > 1 ? " tasks" : " task") + " in the list.\n" + SEPERATOR);
@@ -141,7 +143,7 @@ public class Teddy {
         String task = split[0].trim();
         String start = split[1].split(" ", 2)[1].trim();
         String end = split[2].split(" ", 2)[1].trim();
-        Event event = new Event(task, count, start, end);
+        Event event = new Event(task, start, end);
         list.add(event);
         System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + event
                 + "\nNow you have " + list.size() + (list.size() > 1 ? " tasks" : " task") + " in the list.\n" + SEPERATOR);
@@ -165,5 +167,6 @@ public class Teddy {
             throw new TeddyException("Task number is out of range. Please try again.");
         }
     }
+
 
 }

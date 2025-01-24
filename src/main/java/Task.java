@@ -1,12 +1,10 @@
 public class Task {
 
-    private String task;
-    private int index;
+    private final String task;
     private boolean done;
 
-    public Task(String task, int index) {
+    public Task(String task) {
         this.task = task;
-        this.index = index;
         this.done = false;
     }
 
@@ -18,8 +16,16 @@ public class Task {
         this.done = false;
     }
 
-    public int getIndex() {
-        return this.index;
+    public String getTask() {
+        return this.task;
+    }
+
+    public boolean isDone() {
+        return this.done;
+    }
+
+    public String toFileFormat() {
+        return "T | " + (done ? "1" : "0") + " | " + task;
     }
 
     @Override
