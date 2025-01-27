@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
@@ -6,7 +7,6 @@ public class Teddy {
 
     private static final String SEPERATOR =  "_".repeat(60);
     private static final String FILE_PATH = "./data/teddy.txt";
-    private static final String DIRECTORY_PATH = "./data";
     private static final List<Task> list = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -36,13 +36,13 @@ public class Teddy {
                         unmark(parts);
                         break;
                     case TODO:
-                        addTodo(parts, list.size() + 1);
+                        addTodo(parts);
                         break;
                     case DEADLINE:
-                        addDeadline(parts, list.size() + 1);
+                        addDeadline(parts);
                         break;
                     case EVENT:
-                        addEvent(parts[1], list.size() + 1);
+                        addEvent(parts[1]);
                         break;
                     case DELETE:
                         deleteTask(parts);
@@ -100,18 +100,39 @@ public class Teddy {
         }
     }
 
-    public static void addTodo(String[] parts, int count) throws TeddyException{
+    public static void addTodo(String[] parts) throws TeddyException{
         if (parts.length <= 1 || parts[1].isBlank()) {
             throw new TeddyException("The description of a todo cannot be empty.");
         } else {
             Todo todo = new Todo(parts[1]);
             list.add(todo);
+
+            try {
+                writeToFile(todo.toString());
+            } catch (IOException e) {
+                System.out.println("Something went wrong: " + e.getMessage());
+            }
+
             System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + todo
                     + "\nNow you have " + list.size() + (list.size() > 1 ? " tasks" : " task") + " in the list.\n" + SEPERATOR);
         }
     }
 
-    public static void addDeadline(String[] parts, int count) throws TeddyException {
+    public static void addDeadline(String[] parts) throws TeddyException {
+        Deadline deadline = getDeadline(parts);
+        list.add(deadline);
+
+        try {
+            writeToFile(deadline.toString());
+        } catch (IOException e) {
+            System.out.println("Something went wrong: " + e.getMessage());
+        }
+
+        System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + deadline
+                + "\nNow you have " + list.size() + (list.size() > 1 ? " tasks" : " task") + " in the list.\n" + SEPERATOR);
+    }
+
+    private static Deadline getDeadline(String[] parts) throws TeddyException {
         if (parts.length <= 1 || parts[1].isBlank()) {
             throw new TeddyException("The description of a deadline cannot be empty.");
         }
@@ -122,17 +143,28 @@ public class Teddy {
         if (split.length < 2 || split[1].isBlank()) {
             throw new TeddyException("The time for a deadline cannot be empty.");
         }
-        Deadline deadline = new Deadline(split[0].trim(), split[1].trim());
-        list.add(deadline);
-        System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + deadline
-                + "\nNow you have " + list.size() + (list.size() > 1 ? " tasks" : " task") + " in the list.\n" + SEPERATOR);
+        return new Deadline(split[0].trim(), split[1].trim());
     }
 
 
-    public static void addEvent(String input, int count) throws TeddyException {
+    public static void addEvent(String input) throws TeddyException {
         if (input == null || input.isBlank()) {
             throw new TeddyException("The description of an event cannot be empty.");
         }
+        Event event = getEvent(input);
+        list.add(event);
+
+        try {
+            writeToFile(event.toString());
+        } catch (IOException e) {
+            System.out.println("Something went wrong: " + e.getMessage());
+        }
+
+        System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + event
+                + "\nNow you have " + list.size() + (list.size() > 1 ? " tasks" : " task") + " in the list.\n" + SEPERATOR);
+    }
+
+    private static Event getEvent(String input) throws TeddyException {
         if (!input.contains("/from") || !input.contains("/to")) {
             throw new TeddyException("An event must have '/from' and '/to' followed by the start and end times.");
         }
@@ -143,10 +175,8 @@ public class Teddy {
         String task = split[0].trim();
         String start = split[1].split(" ", 2)[1].trim();
         String end = split[2].split(" ", 2)[1].trim();
-        Event event = new Event(task, start, end);
-        list.add(event);
-        System.out.println(SEPERATOR + "\nGot it, I've added this task:\n  " + event
-                + "\nNow you have " + list.size() + (list.size() > 1 ? " tasks" : " task") + " in the list.\n" + SEPERATOR);
+        return
+                new Event(task, start, end);
     }
 
     public static void deleteTask(String[] parts) throws TeddyException {
@@ -168,5 +198,10 @@ public class Teddy {
         }
     }
 
-
+    private static void writeToFile(String input) throws IOException{
+        FileWriter fw = new FileWriter(FILE_PATH, true);
+        fw.write(input);
+        fw.write("\n");
+        fw.close();
+    }
 }
