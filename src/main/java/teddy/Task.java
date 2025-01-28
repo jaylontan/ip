@@ -1,3 +1,5 @@
+package teddy;
+
 public class Task {
 
     private final String task;
