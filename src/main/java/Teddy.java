@@ -1,8 +1,3 @@
-import java.io.*;
-import java.util.Scanner;
-import java.util.List;
-import java.util.ArrayList;
-
 public class Teddy {
 
     private final Ui ui;

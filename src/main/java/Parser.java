@@ -1,7 +1,6 @@
 public class Parser {
     public static String[] splitInput(String input) {
-        String[] parts = input.split(" ", 2);
-        return parts;
+        return input.split(" ", 2);
     }
 
     public static Command parseCommand(String[] parts) throws TeddyException {
