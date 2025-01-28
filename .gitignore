@@ -16,5 +16,9 @@
 *.iml
 bin/
 
+# teddy.txt
+/data
+/teddy.txt
+
 /text-ui-test/ACTUAL.TXT
 text-ui-test/EXPECTED-UNIX.TXT

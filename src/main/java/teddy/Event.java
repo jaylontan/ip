@@ -1,5 +1,9 @@
 package teddy;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 public class Event extends Task {
 
     private final String start;
@@ -11,14 +15,6 @@ public class Event extends Task {
         this.end = end;
     }
 
-    public String getStart() {
-        return this.start;
-    }
-
-    public String getEnd() {
-        return this.end;
-    }
-
     @Override
     public String toFileFormat() {
         return "E | " + (isDone() ? "1" : "0") + " | " + getTask() + " | " + start + " | " + end;
@@ -26,6 +22,13 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + start + " to: " + end + ")";
+        try {
+            return "[E]" + super.toString() + " (from: " +
+                    LocalDate.parse(this.start).format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + " to: "
+                            + LocalDate.parse(this.end).format(DateTimeFormatter.ofPattern("MMM dd yyyy"))
+                            + ")";
+        } catch (DateTimeParseException e) {
+            return "[E]" + super.toString() + " (from: " + start + " to: " + end + ")";
+        }
     }
 }
