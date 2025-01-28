@@ -1,3 +1,5 @@
+package teddy;
+
 public enum Command{
     TODO,
     DEADLINE,

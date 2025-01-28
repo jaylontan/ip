@@ -1,3 +1,5 @@
+package teddy;
+
 public class Deadline extends Task {
 
     private final String time;
