@@ -10,6 +10,7 @@ public class Storage {
         this.filePath = filePath;
     }
 
+    // Writes the task input by user into teddy.txt
     public void writeToFile(String input) throws IOException {
         FileWriter fw = new FileWriter(filePath, true);
         fw.write(input);
