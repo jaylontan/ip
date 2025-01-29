@@ -8,7 +8,8 @@ public enum Command{
     MARK,
     UNMARK,
     DELETE,
-    BYE;
+    BYE,
+    FIND;
 
     public static Command fromString(String command) throws TeddyException {
         try {

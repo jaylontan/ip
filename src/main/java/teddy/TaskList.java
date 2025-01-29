@@ -141,7 +141,31 @@ public class TaskList {
         }
     }
 
+    public void find(String input) throws TeddyException {
+        if (input == null || input.isBlank()) {
+            throw new TeddyException("The search query cannot be empty. Please provide a keyword.");
+        }
+
+        System.out.println("Here are the matching tasks in your list: \n");
+        int count = 1;
+        boolean found = false;
+
+        for (Task task : this.tasks) {
+            if (task.toString().toLowerCase().contains(input.toLowerCase())) {
+                System.out.println(count + ". " + task);
+                count++;
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No matching tasks found for: " + input);
+        }
+    }
+
+
     public void printTasks() {
+        System.out.println("Here are the tasks in your list: \n");
         for (int i = 0; i < this.tasks.size(); i++) {
             System.out.println((i + 1) + ". " + this.tasks.get(i));
         }
