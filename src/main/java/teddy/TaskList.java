@@ -102,9 +102,9 @@ public class TaskList {
             System.out.println("Noted. I've removed this task:\n  " + tasks.get(index - 1));
             tasks.remove(index - 1);
             System.out.println("Now you have " + tasks.size() + (tasks.size() == 1 ? " task" : " tasks") + " in the list.");
-        } catch (NumberFormatException e) { // handle non integer input
+        } catch (NumberFormatException e) { // Handle non integer input
             throw new TeddyException("Task number must be a valid integer.");
-        } catch (IndexOutOfBoundsException e) { //handle index out of range errors
+        } catch (IndexOutOfBoundsException e) { // Handle index out of range errors
             throw new TeddyException("Task number is out of range. Please try again.");
         }
     }

@@ -1,6 +1,7 @@
 package teddy;
 
-import java.io.*;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Storage {
 
