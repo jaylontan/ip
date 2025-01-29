@@ -20,7 +20,7 @@ public class UiTest {
     }
 
     @Test
-    void welcomeTest() {
+    void welcome_displaysCorrectMessage() {
         ui = new Ui();
         ui.welcome();
 
@@ -29,7 +29,7 @@ public class UiTest {
     }
 
     @Test
-    void goodbyeTest() {
+    void goodbye_displaysCorrectMessage() {
         ui = new Ui();
         ui.goodbye();
 
@@ -38,7 +38,7 @@ public class UiTest {
     }
 
     @Test
-    void readCommandTest() {
+    void readCommand_returnsUserInput() {
         String input = "todo read book\n";
         System.setIn(new ByteArrayInputStream(input.getBytes())); // Simulate user input
 
@@ -49,7 +49,7 @@ public class UiTest {
     }
 
     @Test
-    void errorTest() {
+    void error_displaysCorrectErrorMessage() {
         ui = new Ui();
         ui.error("Invalid command");
 
@@ -58,7 +58,7 @@ public class UiTest {
     }
 
     @Test
-    void setSEPERATORTest() {
+    void setSEPERATOR_displaysCorrectSeparator() {
         ui = new Ui();
         ui.setSEPERATOR();
 

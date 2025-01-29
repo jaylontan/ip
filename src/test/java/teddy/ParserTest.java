@@ -16,7 +16,7 @@ public class ParserTest {
     }
 
     @Test
-    void splitInputSingleWordCommandSplitsCorrectly() {
+    void splitInput_singleWord_commandSplitsCorrectly() {
         String input = "list";
         String[] result = Parser.splitInput(input);
 
@@ -25,7 +25,7 @@ public class ParserTest {
     }
 
     @Test
-    void parseCommandValidCommandReturnsCorrectCommand() throws TeddyException {
+    void parseCommand_validCommand_returnsCorrectCommand() throws TeddyException {
         String[] parts = {"todo"};
         Command result = Parser.parseCommand(parts);
 
@@ -33,7 +33,7 @@ public class ParserTest {
     }
 
     @Test
-    void parseCommandInvalidCommandThrowsException() {
+    void parseCommand_invalidCommand_throwsException() {
         String[] parts = {"unknown"};
 
         Exception exception = assertThrows(TeddyException.class, () -> Parser.parseCommand(parts));
