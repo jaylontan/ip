@@ -61,6 +61,11 @@ public class Teddy {
                         tasks.deleteTask(parts);
                         ui.setSEPERATOR();
                         break;
+                    case FIND:
+                        ui.setSEPERATOR();
+                        tasks.find(parts[1]);
+                        ui.setSEPERATOR();
+                        break;
                     default:
                         throw new TeddyException("I don't understand the command: " + parts[0]);
                 }
