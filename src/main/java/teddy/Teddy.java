@@ -12,6 +12,7 @@ public class Teddy {
         this.tasks = new TaskList(storage);
     }
 
+    // Runs Teddy
     public void run() {
         ui.welcome();
 

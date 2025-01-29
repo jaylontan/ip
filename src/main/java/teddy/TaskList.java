@@ -13,6 +13,7 @@ public class TaskList {
         this.storage = storage;
     }
 
+    // Add TodoTask to TaskList
     public void addTodo(String[] parts) throws TeddyException{
         if (parts.length <= 1 || parts[1].isBlank()) {
             throw new TeddyException("The description of a todo cannot be empty.");
@@ -31,6 +32,7 @@ public class TaskList {
         }
     }
 
+    // Add Deadline to TaskList
     public void addDeadline(String[] parts) throws TeddyException {
         Deadline deadline = getDeadline(parts);
         tasks.add(deadline);
@@ -59,6 +61,7 @@ public class TaskList {
         return new Deadline(split[0].trim(), split[1].trim());
     }
 
+    // Add Event to TaskList
     public void addEvent(String input) throws TeddyException {
         if (input == null || input.isBlank()) {
             throw new TeddyException("The description of an event cannot be empty.");
@@ -90,6 +93,7 @@ public class TaskList {
         return new Event(task, start, end);
     }
 
+    // Delete Task from TaskList
     public void deleteTask(String[] parts) throws TeddyException {
         try {
             if (parts.length <= 1 || parts[1].isBlank()) { // check if index is provided
@@ -109,6 +113,7 @@ public class TaskList {
         }
     }
 
+    // Mark Task as done in TaskList
     public void markTask(String[] parts) throws TeddyException {
         if (parts.length <= 1 || parts[1].isBlank()) {
             throw new TeddyException("Please specify the task number to mark as done.");
@@ -125,6 +130,7 @@ public class TaskList {
         }
     }
 
+    // Mark task as not done in TaskList
     public void unmarkTask(String[] parts) throws TeddyException {
         if (parts.length <= 1 || parts[1].isBlank()) {
             throw new TeddyException("Please specify the task number to marked as not done.");
@@ -141,6 +147,7 @@ public class TaskList {
         }
     }
 
+    // Print and display the lists of tasks in TaskList
     public void printTasks() {
         for (int i = 0; i < this.tasks.size(); i++) {
             System.out.println((i + 1) + ". " + this.tasks.get(i));
