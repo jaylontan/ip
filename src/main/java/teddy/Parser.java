@@ -2,6 +2,7 @@ package teddy;
 
 public class Parser {
     public static String[] splitInput(String input) {
+        assert input != null : "Input to splitInput() should not be null";
         return input.split(" ", 2);
     }
 

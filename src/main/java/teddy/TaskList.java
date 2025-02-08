@@ -74,13 +74,11 @@ public class TaskList {
     }
 
     private Event getEvent(String input) throws TeddyException {
-        if (!input.contains("/from") || !input.contains("/to")) {
-            throw new TeddyException("An event must have '/from' and '/to' followed by the start and end times.");
-        }
+        assert input.contains("/from") && input.contains("/to") : "Event input must contain '/from' and '/to'";
+
         String[] split = input.split("/");
-        if (split.length < 3) {
-            throw new TeddyException("The start and end times for an event cannot be empty.");
-        }
+        assert split.length >= 3 : "Incorrect event format";
+
         String task = split[0].trim();
         String start = split[1].split(" ", 2)[1].trim();
         String end = split[2].split(" ", 2)[1].trim();
@@ -107,9 +105,8 @@ public class TaskList {
 
     // Mark Task as done in TaskList
     public String markTask(String[] parts) throws TeddyException {
-        if (parts.length <= 1 || parts[1].isBlank()) {
-            throw new TeddyException("Please specify the task number to mark as done.");
-        }
+        assert parts.length > 1 : "Parts array should have at least 2 elements (command + index)";
+
         try {
             int index = Integer.parseInt(parts[1]);
             tasks.get(index - 1).mark();
