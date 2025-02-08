@@ -17,13 +17,28 @@ public class Event extends Task {
 
     @Override
     public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[E]");
+        sb.append(super.toString());
+        sb.append(" (from: ");
+
         try {
-            return "[E]" + super.toString() + " (from: " +
-                    LocalDate.parse(this.start).format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + " to: "
-                            + LocalDate.parse(this.end).format(DateTimeFormatter.ofPattern("MMM dd yyyy"))
-                            + ")";
+            String startTime = LocalDate.parse(this.start).format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+            String endTime = LocalDate.parse(this.end).format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+
+            sb.append(startTime);
+            sb.append(" to: ");
+            sb.append(")");
+
+            return sb.toString();
         } catch (DateTimeParseException e) {
-            return "[E]" + super.toString() + " (from: " + start + " to: " + end + ")";
+            sb.append(" (from: ");
+            sb.append(start);
+            sb.append(" to: ");
+            sb.append(end);
+            sb.append(")");
+
+            return sb.toString();
         }
     }
 }

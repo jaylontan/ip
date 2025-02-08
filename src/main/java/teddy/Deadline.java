@@ -15,11 +15,23 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[D]");
+        sb.append(super.toString());
+        sb.append(" (by: ");
+
         try {
-            return "[D]" + super.toString() + " (by: "
-                    + LocalDate.parse(this.time).format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ")";
+            String by = LocalDate.parse(this.time).format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+
+            sb.append(by);
+            sb.append(")");
+
+            return sb.toString();
         } catch (DateTimeParseException e) {
-            return "[D]" + super.toString() + " (by: " + this.time + ")";
+            sb.append(this.time);
+            sb.append(")");
+
+            return sb.toString();
         }
     }
 }
