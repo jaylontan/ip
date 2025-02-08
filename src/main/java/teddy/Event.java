@@ -15,30 +15,36 @@ public class Event extends Task {
         this.end = end;
     }
 
+    public String getStart() {
+        return this.start;
+    }
+
+    public String getEnd() {
+        return this.end;
+    }
+
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[E]");
-        sb.append(super.toString());
-        sb.append(" (from: ");
-
         try {
-            String startTime = LocalDate.parse(this.start).format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
-            String endTime = LocalDate.parse(this.end).format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
-
-            sb.append(startTime);
-            sb.append(" to: ");
-            sb.append(")");
-
-            return sb.toString();
+            return "[E]" + super.toString() + " (from: " +
+                    LocalDate.parse(this.start).format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + " to: "
+                            + LocalDate.parse(this.end).format(DateTimeFormatter.ofPattern("MMM dd yyyy"))
+                            + ")";
         } catch (DateTimeParseException e) {
-            sb.append(" (from: ");
-            sb.append(start);
-            sb.append(" to: ");
-            sb.append(end);
-            sb.append(")");
-
-            return sb.toString();
+            return "[E]" + super.toString() + " (from: " + start + " to: " + end + ")";
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof Event) {
+            Event task = (Event) obj;
+            return this.getTask().equals(task.getTask()) && this.getStart().equals(task.getStart())
+                    && this.getEnd().equals(task.getEnd());
+        }
+        return false;
     }
 }

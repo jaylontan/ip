@@ -1,6 +1,6 @@
 package teddy;
 
-public class Task {
+public abstract class Task {
 
     private final String task;
     private boolean done;
@@ -37,5 +37,17 @@ public class Task {
         } else {
             return "[ ] " + this.task;
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof Task) {
+            Task otherTask = (Task) obj;
+            return this.task.equals(otherTask.getTask());
+        }
+        return false;
     }
 }

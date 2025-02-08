@@ -19,6 +19,11 @@ public class TaskList {
             throw new TeddyException("The description of a todo cannot be empty.");
         }
         Todo todo = new Todo(parts[1]);
+
+        if (tasks.contains(todo)) {
+            return "This task already exists in your list!";
+        }
+
         tasks.add(todo);
 
         try {
@@ -32,6 +37,11 @@ public class TaskList {
     // Add Deadline to TaskList
     public String addDeadline(String[] parts) throws TeddyException {
         Deadline deadline = getDeadline(parts);
+
+        if (tasks.contains(deadline)) {
+            return "This task already exists in your list!";
+        }
+
         tasks.add(deadline);
 
         try {
@@ -61,6 +71,11 @@ public class TaskList {
             throw new TeddyException("The description of an event cannot be empty.");
         }
         Event event = getEvent(input);
+
+        if (tasks.contains(event)) {
+            return "This task already exists in your list!";
+        }
+
         tasks.add(event);
 
         try {
