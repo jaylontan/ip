@@ -20,6 +20,7 @@ public class TaskList {
         }
         Todo todo = new Todo(parts[1]);
 
+        // Check for duplicates
         if (tasks.contains(todo)) {
             return "This task already exists in your list!";
         }
@@ -38,6 +39,7 @@ public class TaskList {
     public String addDeadline(String[] parts) throws TeddyException {
         Deadline deadline = getDeadline(parts);
 
+        // Check for duplicates
         if (tasks.contains(deadline)) {
             return "This task already exists in your list!";
         }
@@ -72,6 +74,7 @@ public class TaskList {
         }
         Event event = getEvent(input);
 
+        // Check for duplicates
         if (tasks.contains(event)) {
             return "This task already exists in your list!";
         }
