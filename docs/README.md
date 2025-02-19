@@ -1,6 +1,6 @@
 # Teddy User Guide
 
-![Teddy UI](Ui.png)
+![Ui.png](Ui.png)
 
 ## Introduction
 Teddy is a friendly AI task assistant designed to help you stay organized. It allows you to manage tasks efficiently by adding, marking, finding, and deleting them.
